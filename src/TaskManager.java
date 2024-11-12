@@ -56,7 +56,7 @@ public class TaskManager {
         return subTasks.get(id);
     }
 
-    public void createTask(SubTask task) {
+    public void createSubTask(SubTask task) {
         subTasks.put(task.getId(), task);
     }
 
