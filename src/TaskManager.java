@@ -56,8 +56,8 @@ public class TaskManager {
         return subTasks.get(id);
     }
 
-    public void createTask(SubTask task) {
-        subTasks.put(task.getId(), task);
+    public void createSubTask(SubTask task) {
+        subTasks.put(task.getId() - 1, task);
     }
 
     public void updateSubTask(SubTask task) {
@@ -86,11 +86,12 @@ public class TaskManager {
 
     public void createEpicTask(EpicTask task) {
         epicTasks.put(task.getId(), task);
+
     }
 
     public void updateEpicTask(EpicTask task) {
-        epicTasks.put(task.getId(), task);
-        System.out.println("Эпик задача с id " + task.getId() + " успешно обновлена.");
+        epicTasks.put(task.getId() - 1, task);
+        System.out.println("Эпик задача с id " + (task.getId() - 1) + " успешно обновлена.");
     }
 
     public void deleteEpicTaskById(int id) {

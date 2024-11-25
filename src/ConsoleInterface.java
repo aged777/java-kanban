@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -28,14 +29,6 @@ public class ConsoleInterface {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public void createTask(TaskManager taskManager) {
-        String title = getTaskTitleFromUser();
-        String description = getTaskDescriptionFromUser();
-        Task task = new Task(title, description);
-        taskManager.createTask(task);
-        System.out.println("Задача: " + title + ", с индексом " + task.getId() + " успешно создана.");
-    }
-
     public String getTaskTitleFromUser() {
         System.out.println("Введите заголовок задачи: ");
         return scanner.nextLine();
@@ -46,12 +39,33 @@ public class ConsoleInterface {
         return scanner.nextLine();
     }
 
+    public void createTask(TaskManager taskManager) {
+        String title = getTaskTitleFromUser();
+        String description = getTaskDescriptionFromUser();
+        Task task = new Task(title, description);
+        taskManager.createTask(task);
+        System.out.println("Задача: " + title + ", с id "
+                + task.getId() + " успешно создана.");
+    }
+
     public void createEpicTask(TaskManager taskManager) {
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
         EpicTask task = new EpicTask(title, description);
         taskManager.createEpicTask(task);
-        System.out.println("Эпик задача: " + title + ", с индексом " + task.getId() + " успешно создана.");
+        System.out.println("Эпик задача: " + title + ", с id "
+                + task.getId() + " успешно создана.");
+    }
+
+    public void createSubTask(TaskManager taskManager) {
+        System.out.println("Введите ID эпик задачи, для которой нужно создать подзадачу: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        String title = getTaskTitleFromUser();
+        String description = getTaskDescriptionFromUser();
+        SubTask task = new SubTask(taskManager.getEpicTaskById(id), title, description);
+        taskManager.createSubTask(task);
+        System.out.println("Подзадача: " + title + ", с индексом "
+                + task.getId() + " успешно создана.");
     }
 
     public void getAllTasks(TaskManager taskManager) {
@@ -62,8 +76,52 @@ public class ConsoleInterface {
         }
         System.out.println("Список всех задач:");
         for (Task task : tasks.values()) {
-            System.out.println("Задача ID: " + task.getId() + ", статус: " + task.getStatus() + ",  Заголовок: " + task.getTitle() +
+            System.out.println("Задача ID: " + task.getId() + ", статус: "
+                    + task.getStatus() + ",  Заголовок: " + task.getTitle() +
                     "  Описание: " + task.getDescription());
+        }
+    }
+
+    public void getAllSubTasks(TaskManager taskManager) {
+        HashMap<Integer, SubTask> tasks = taskManager.getAllSubTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("Cписок подзадач пуст.");
+            return;
+        }
+        System.out.println("Список всех подзадач:");
+        for (Task task : tasks.values()) {
+            System.out.println("Подзадача ID: " + task.getId() + ", статус: "
+                    + task.getStatus() + ",  Заголовок: " + task.getTitle() +
+                    "  Описание: " + task.getDescription());
+        }
+    }
+
+    public void getAllEpicTasks(TaskManager taskManager) {
+        HashMap<Integer, EpicTask> tasks = taskManager.getAllEpicTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("Cписок эпикзадач пуст.");
+            return;
+        }
+        System.out.println("Список всех эпикзадач:");
+        for (Task task : tasks.values()) {
+            System.out.println("Эпик задача ID: " + task.getId() + ", статус: "
+                    + task.getStatus() + ",  Заголовок: " + task.getTitle() +
+                    "  Описание: " + task.getDescription());
+        }
+    }
+
+    public void getEpicIDSubTasks(TaskManager taskManager) {
+        System.out.println("Введите ID эпик задачи, для которой нужно вывести список подзадач: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        HashMap<Integer, SubTask> subTasks = taskManager.getAllSubTasks();
+
+        System.out.println("Список всех подзадач эпика ID: " + taskManager.getEpicTaskById(id).getId());
+        for (SubTask subtask : subTasks.values()) {
+            if (subtask.getEpicTaskID() == id) {
+                System.out.println("Подзадача ID: " + subtask.getId() + ", статус: "
+                        + subtask.getStatus() + ",  Заголовок: " + subtask.getTitle()
+                        + "  Описание: " + subtask.getDescription());
+            }
         }
     }
 

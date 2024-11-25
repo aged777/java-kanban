@@ -20,15 +20,19 @@ public class Main {
                     consoleInterface.createEpicTask(taskManager);
                     break;
                 case 3:
+                    consoleInterface.createSubTask(taskManager);
                     break;
                 case 4:
                     consoleInterface.getAllTasks(taskManager);
                     break;
                 case 5:
+                    consoleInterface.getAllSubTasks(taskManager);
                     break;
                 case 6:
+                    consoleInterface.getAllEpicTasks(taskManager);
                     break;
                 case 7:
+                    consoleInterface.getEpicIDSubTasks(taskManager);
                     break;
                 case 8:
                     break;
