@@ -3,6 +3,7 @@ public class SubTask extends Task {
     public SubTask(EpicTask epicTask, String title, String description) {
         super(title, description);
         this.epicTaskID = epicTask.getId();
+        epicTask.addSubTask(this);
     }
 
     public int getEpicTaskID() {
@@ -13,7 +14,7 @@ public class SubTask extends Task {
     @Override
     public String toString() {
         return "SubTask{" +
-                "epicTask=" + epicTaskID +
+                "epicTaskID=" + epicTaskID +
                 '}' + super.toString();
     }
 }

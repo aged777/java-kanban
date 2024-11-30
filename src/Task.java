@@ -1,10 +1,10 @@
 import java.util.Objects;
 
 public class Task {
+
     private final int id;
     private String title;
     private String description;
-
     private Status status;
 
     public Task(String title, String description) {

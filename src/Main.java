@@ -1,38 +1,40 @@
-import java.util.Scanner;
-
+/**
+ * В классе Main запустается бесконечный цикл консольного интерфейса,
+ * в котором посредством выбора пользователем пунктов основного меню происходит основная работа программы.
+ *
+ */
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
-        ConsoleInterface consoleInterface = new ConsoleInterface();
+
         int menuItem;
 
-        consoleInterface.printHello();
+        ConsoleInterface.printHello();
 
         while(true) {
-            consoleInterface.printMenu();
-            menuItem = consoleInterface.getMenuNumber();
+            ConsoleInterface.printMenu();
+            menuItem = ConsoleInterface.getMenuItem();
             switch(menuItem) {
                 case 1:
-                    consoleInterface.createTask(taskManager);
+                    ConsoleInterface.createTask();
                     break;
                 case 2:
-                    consoleInterface.createEpicTask(taskManager);
+                    ConsoleInterface.createEpicTask();
                     break;
                 case 3:
-                    consoleInterface.createSubTask(taskManager);
+                    ConsoleInterface.createSubTask();
                     break;
                 case 4:
-                    consoleInterface.getAllTasks(taskManager);
+                    ConsoleInterface.getAllTasks();
                     break;
                 case 5:
-                    consoleInterface.getAllSubTasks(taskManager);
+                    ConsoleInterface.getAllSubTasks();
                     break;
                 case 6:
-                    consoleInterface.getAllEpicTasks(taskManager);
+                    ConsoleInterface.getAllEpicTasks();
                     break;
                 case 7:
-                    consoleInterface.getEpicIDSubTasks(taskManager);
+                    ConsoleInterface.getEpicIDSubTasks();
                     break;
                 case 8:
                     break;
@@ -41,15 +43,28 @@ public class Main {
                 case 10:
                     break;
                 case 11:
+                    ConsoleInterface.deleteAllTasks();
                     break;
                 case 12:
+                    ConsoleInterface.deleteAllSubTasks();
                     break;
                 case 13:
+                    ConsoleInterface.deleteAllEpicTasks();
                     break;
                 case 14:
+                    ConsoleInterface.deleteAllEpicIdSubTasks();
+                    break;
+                case 15:
+                    ConsoleInterface.getTaskById();
+                    break;
+                case 16:
+                    ConsoleInterface.getSubTaskById();
+                    break;
+                case 17:
+                    ConsoleInterface.getEpicTaskById();
                     break;
                 case 0:
-                    consoleInterface.printGoodBye();
+                    ConsoleInterface.printGoodBye();
                     return;
             }
         }

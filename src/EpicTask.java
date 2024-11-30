@@ -1,24 +1,26 @@
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
-    private ArrayList<SubTask> subtasks = new ArrayList<>();
+
+    private ArrayList<Integer> subTasksID = new ArrayList<>();
 
     public EpicTask(String title, String description) {
         super(title, description);
     }
 
     public void addSubTask(SubTask subtask) {
-        subtasks.add(subtask);
+        subTasksID.add(subtask.getId());
     }
 
-    public ArrayList<SubTask> getSubtasks() {
-        return subtasks;
+    public ArrayList<Integer> getAllSubtasksID() {
+        return subTasksID;
     }
 
     @Override
     public String toString() {
         return "EpicTask{" +
-                "subtasks=" + subtasks +
+                "subtasks=" + TaskManager.getAllSubTasks().toString() +
                 '}' + super.toString();
     }
+
 }

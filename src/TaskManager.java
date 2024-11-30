@@ -1,5 +1,10 @@
 import java.util.HashMap;
 
+/**
+ * Класс создан для хранения, изменения, получения объектов всех видов задач.
+ * Методы класса ничего не должны выводить в консоль или запрашивать что-либо от пользователя, для этого создан класс
+ * ConsoleInterface.
+ */
 public class TaskManager {
     private static int id = 0;
     private static HashMap<Integer, Task> tasks = new HashMap<>();
@@ -15,91 +20,90 @@ public class TaskManager {
     }
 
     // Методы для Task
-    public HashMap<Integer, Task> getAllTasks() {
+    public static HashMap<Integer, Task> getAllTasks() {
         return tasks;
     }
 
-    public void deleteAllTasks() {
+    public static void deleteAllTasks() {
         tasks.clear();
-        System.out.println("Все задачи успешно удалены.");
     }
 
-    public Task getTaskById(int id) {
+    public static Task getTaskById(int id) {
         return tasks.get(id);
     }
 
-    public void createTask(Task task) {
+    public static void createTask(Task task) {
         tasks.put(task.getId() - 1, task);
     }
 
-    public void updateTask(Task task) {
+    public static void updateTask(Task task) {
         tasks.put(task.getId(), task);
-        System.out.println("Задача с id " + task.getId() + " успешно обновлена.");
     }
 
-    public void deleteTaskById(int id) {
+    public static void deleteTaskById(int id) {
         tasks.remove(id);
-        System.out.println("Задача с id " + id + " успешно удалена.");
     }
 
     // Методы для SubTask
-    public HashMap<Integer, SubTask> getAllSubTasks() {
+    public static HashMap<Integer, SubTask> getAllSubTasks() {
         return subTasks;
     }
 
-    public void deleteAllSubTasks() {
+    public static void deleteAllSubTasks() {
         subTasks.clear();
-        System.out.println("Все подзадачи успешно удалены.");
     }
 
-    public SubTask getSubTaskById(int id) {
+    public static void deleteEpicIDSubTasks(int id) {
+        for (SubTask subTask : TaskManager.getAllSubTasks().values()) {
+            if (subTask.getEpicTaskID() == id) {
+                TaskManager.deleteSubTaskById(subTask.getId());
+            }
+        }
+    }
+
+    public static SubTask getSubTaskById(int id) {
         return subTasks.get(id);
     }
 
-    public void createSubTask(SubTask task) {
+    public static void createSubTask(SubTask task) {
         subTasks.put(task.getId() - 1, task);
     }
 
-    public void updateSubTask(SubTask task) {
+    public static void updateSubTask(SubTask task) {
         subTasks.put(task.getId(), task);
-        System.out.println("Подзадача с id " + task.getId() + " успешно обновлена.");
     }
 
-    public void deleteSubTaskById(int id) {
+    public static void deleteSubTaskById(int id) {
         subTasks.remove(id);
-        System.out.println("Подзадача с id " + id + " успешно удалена.");
     }
 
     // Методы для EpicTask
-    public HashMap<Integer, EpicTask> getAllEpicTasks() {
+    public static HashMap<Integer, EpicTask> getAllEpicTasks() {
         return epicTasks;
     }
 
-    public void deleteAllEpicTasks() {
+    public static void deleteAllEpicTasks() {
         epicTasks.clear();
-        System.out.println("Все эпик задачи успешно удалены.");
     }
 
-    public EpicTask getEpicTaskById(int id) {
+    public static EpicTask getEpicTaskById(int id) {
         return epicTasks.get(id);
     }
 
-    public void createEpicTask(EpicTask task) {
-        epicTasks.put(task.getId(), task);
-
-    }
-
-    public void updateEpicTask(EpicTask task) {
+    public static void createEpicTask(EpicTask task) {
         epicTasks.put(task.getId() - 1, task);
-        System.out.println("Эпик задача с id " + (task.getId() - 1) + " успешно обновлена.");
+
     }
 
-    public void deleteEpicTaskById(int id) {
+    public static void updateEpicTask(EpicTask task) {
+        epicTasks.put(task.getId() - 1, task);
+    }
+
+    public static void deleteEpicTaskById(int id) {
         epicTasks.remove(id);
-        System.out.println("Эпик задача с id " + id + " успешно удалена.");
     }
 
-    public HashMap<Integer, SubTask> getAllEpicTaskSubTasks(EpicTask epicTask) {
+    public static HashMap<Integer, SubTask> getAllEpicTaskSubTasks(EpicTask epicTask) {
         HashMap<Integer, SubTask> result = new HashMap<>();
         for (SubTask subTask : subTasks.values()) {
             if (subTask.getEpicTaskID() == epicTask.getId()) {
