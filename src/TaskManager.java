@@ -86,7 +86,10 @@ public class TaskManager {
     }
 
     public static void deleteSubTaskById(int id) {
+        EpicTask epicTask = TaskManager.getEpicTaskById(subTasks.get(id).getEpicTaskID());
+        epicTask.removeSubTaskId(id);
         subTasks.remove(id);
+        epicTask.evaluateEpicTaskStatus();
     }
 
     // Методы для EpicTask
@@ -112,7 +115,10 @@ public class TaskManager {
     }
 
     public static void deleteEpicTaskById(int id) {
+        EpicTask epicToDelete = getEpicTaskById(id);
+        for (int subTaskID : epicToDelete.getSubTasksID()) {
+            TaskManager.subTasks.remove(subTaskID);
+        }
         epicTasks.remove(id);
     }
-
 }

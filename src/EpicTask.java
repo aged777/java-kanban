@@ -13,6 +13,14 @@ public class EpicTask extends Task {
         evaluateEpicTaskStatus();
     }
 
+    public ArrayList<Integer> getSubTasksID() {
+        return subTasksID;
+    }
+
+    public void removeSubTaskId(Integer id) {
+        subTasksID.remove(id);
+    }
+
     public void evaluateEpicTaskStatus() {
         int[] util = new int[2];
         for (Integer subTaskID : subTasksID) {

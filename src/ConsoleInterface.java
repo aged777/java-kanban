@@ -307,7 +307,7 @@ public class ConsoleInterface {
 
     public static void deleteTaskById() {
         int id = ConsoleInterface.getIDFromUser();
-        if (id < 0 || id > TaskManager.getAllTasks().size()) {
+        if (TaskManager.getTaskById(id) == null) {
             System.out.println("Задачи с таким ID не существует.");
             return;
         }
@@ -316,7 +316,7 @@ public class ConsoleInterface {
 
     public static void deleteSubTaskById() {
         int id = ConsoleInterface.getIDFromUser();
-        if (id < 0 || id > TaskManager.getAllSubTasks().size()) {
+        if (TaskManager.getSubTaskById(id) == null) {
             System.out.println("Подзадачи с таким ID не существует.");
             return;
         }
@@ -325,7 +325,7 @@ public class ConsoleInterface {
 
     public static void deleteEpicTaskById() {
         int id = ConsoleInterface.getIDFromUser();
-        if (id < 0 || id > TaskManager.getAllEpicTasks().size()) {
+        if (TaskManager.getEpicTaskById(id) == null) {
             System.out.println("Эпик задачи с таким ID не существует.");
             return;
         }
