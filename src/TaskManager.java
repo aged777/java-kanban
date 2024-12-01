@@ -33,7 +33,7 @@ public class TaskManager {
     }
 
     public static void createTask(Task task) {
-        tasks.put(task.getId() - 1, task);
+        tasks.put(task.getId(), task);
     }
 
     public static void updateTask(Task task) {
@@ -61,16 +61,28 @@ public class TaskManager {
         }
     }
 
+    public static HashMap<Integer, SubTask> getEpicIDSubTasks(int id) {
+        HashMap<Integer, SubTask> result = new HashMap<>();
+        for (SubTask subTask : TaskManager.getAllSubTasks().values()) {
+            if (subTask.getEpicTaskID() == id) {
+                result.put(subTask.getId(), subTask);
+            }
+        }
+        return result;
+    }
+
     public static SubTask getSubTaskById(int id) {
         return subTasks.get(id);
     }
 
     public static void createSubTask(SubTask task) {
-        subTasks.put(task.getId() - 1, task);
+        subTasks.put(task.getId(), task);
+        getEpicTaskById(task.getEpicTaskID()).addSubTask(task);
     }
 
     public static void updateSubTask(SubTask task) {
         subTasks.put(task.getId(), task);
+        getEpicTaskById(task.getEpicTaskID()).evaluateEpicTaskStatus();
     }
 
     public static void deleteSubTaskById(int id) {
@@ -91,25 +103,16 @@ public class TaskManager {
     }
 
     public static void createEpicTask(EpicTask task) {
-        epicTasks.put(task.getId() - 1, task);
+        epicTasks.put(task.getId(), task);
 
     }
 
     public static void updateEpicTask(EpicTask task) {
-        epicTasks.put(task.getId() - 1, task);
+        epicTasks.put(task.getId(), task);
     }
 
     public static void deleteEpicTaskById(int id) {
         epicTasks.remove(id);
     }
 
-    public static HashMap<Integer, SubTask> getAllEpicTaskSubTasks(EpicTask epicTask) {
-        HashMap<Integer, SubTask> result = new HashMap<>();
-        for (SubTask subTask : subTasks.values()) {
-            if (subTask.getEpicTaskID() == epicTask.getId()) {
-                result.put(subTask.getId(), subTask);
-            }
-        }
-        return result;
-    }
 }

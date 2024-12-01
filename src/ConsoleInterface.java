@@ -29,6 +29,9 @@ public class ConsoleInterface {
         System.out.println("15 - Получить задачу по ее ID");
         System.out.println("16 - Получить подзадачу по ее ID");
         System.out.println("17 - Получить эпик задачу по ее ID");
+        System.out.println("18 - Удалить задачу по ее ID");
+        System.out.println("19 - Удалить подзадачу по ее ID");
+        System.out.println("20 - Удалить эпик задачу по ее ID");
         System.out.println("0 - Завершение работы.");
     }
 
@@ -45,6 +48,23 @@ public class ConsoleInterface {
     public static String getTaskDescriptionFromUser() {
         System.out.println("Введите описание задачи: ");
         return scanner.nextLine();
+    }
+
+    public static Status getStatusFromUser() {
+        String answer;
+        System.out.println("Введите новое значение статуса задачи: NEW или IN_PROGRESS или DONE");
+        while (true) {
+            answer = scanner.nextLine();
+            if (answer.equals("NEW")) {
+                return Status.NEW;
+            } else if (answer.equals("IN_PROGRESS")) {
+                return Status.IN_PROGRESS;
+            } else if (answer.equals("DONE")) {
+                return Status.DONE;
+            } else {
+                System.out.println("Введите NEW или IN_PROGRESS или DONE");
+            }
+        }
     }
 
     public static int getIDFromUser() {
@@ -96,7 +116,7 @@ public class ConsoleInterface {
     }
 
     public static void deleteAllTasks() {
-        System.out.println("Вы действительно хотите удалить все задачи?   y / n :  ");
+        System.out.println("Вы действительно хотите удалить все задачи?");
         if (getYesOrNoFromUser()) {
             TaskManager.deleteAllTasks();
             System.out.println("Все задачи успешно удалены.");
@@ -104,7 +124,7 @@ public class ConsoleInterface {
     }
 
     public static void deleteAllSubTasks() {
-        System.out.println("Вы действительно хотите удалить все подзадачи?   y / n :  ");
+        System.out.println("Вы действительно хотите удалить все подзадачи?");
         if (getYesOrNoFromUser()) {
             TaskManager.deleteAllSubTasks();
             System.out.println("Все подзадачи успешно удалены.");
@@ -113,7 +133,7 @@ public class ConsoleInterface {
     }
 
     public static void deleteAllEpicTasks() {
-        System.out.println("Вы действительно хотите удалить все эпик задачи?   y / n :  ");
+        System.out.println("Вы действительно хотите удалить все эпик задачи?");
         if (getYesOrNoFromUser()) {
             TaskManager.deleteAllEpicTasks();
             System.out.println("Все эпик задачи успешно удалены.");
@@ -122,11 +142,76 @@ public class ConsoleInterface {
 
     public static void deleteAllEpicIdSubTasks() {
         int id = ConsoleInterface.getIDFromUser();
-        System.out.println("Вы действительно хотите удалить все эпик задачи?   y / n :  ");
+        System.out.println("Вы действительно хотите удалить все эпик задачи?");
         if (getYesOrNoFromUser()) {
             TaskManager.deleteEpicIDSubTasks(id);
             System.out.println("Все подзадачи эпика с ID: " + id + " успешно удалены.");
         }
+    }
+
+    public static void updateTask() {
+        int id = ConsoleInterface.getIDFromUser();
+        Task taskToUpdate = TaskManager.getTaskById(id);
+        if (taskToUpdate == null) {
+            System.out.println("Задачи с таким ID не существует.");
+            return;
+        }
+        System.out.println("Хотите изменить заголовок задачи?");
+        if (getYesOrNoFromUser()) {
+            taskToUpdate.setTitle(getTaskTitleFromUser());
+        }
+        System.out.println("Хотите изменить описание задачи?");
+        if (getYesOrNoFromUser()) {
+            taskToUpdate.setDescription(getTaskDescriptionFromUser());
+        }
+        System.out.println("Хотите изменить статус задачи? Сейчас статус: " + taskToUpdate.getStatus());
+        if (getYesOrNoFromUser()) {
+            taskToUpdate.setStatus(getStatusFromUser());
+        }
+        TaskManager.updateTask(taskToUpdate);
+    }
+
+    public static void updateSubTask() {
+        int id = ConsoleInterface.getIDFromUser();
+        SubTask subTaskToUpdate = TaskManager.getSubTaskById(id);
+        if (subTaskToUpdate == null) {
+            System.out.println("Задачи с таким ID не существует.");
+            return;
+        }
+        System.out.println("Хотите изменить заголовок задачи?");
+        if (getYesOrNoFromUser()) {
+            subTaskToUpdate.setTitle(getTaskTitleFromUser());
+        }
+        System.out.println("Хотите изменить описание подзадачи?");
+        if (getYesOrNoFromUser()) {
+            subTaskToUpdate.setDescription(getTaskDescriptionFromUser());
+        }
+        System.out.println("Хотите изменить статус подзадачи? Сейчас статус: " + subTaskToUpdate.getStatus());
+        if (getYesOrNoFromUser()) {
+            subTaskToUpdate.setStatus(getStatusFromUser());
+        }
+        TaskManager.updateSubTask(subTaskToUpdate);
+    }
+
+    public static void updateEpicTask() {
+        int id = ConsoleInterface.getIDFromUser();
+        EpicTask epicTaskToUpdate = TaskManager.getEpicTaskById(id);
+        if (epicTaskToUpdate == null) {
+            System.out.println("Задачи с таким ID не существует.");
+            return;
+        }
+        System.out.println("Хотите изменить заголовок эпик задачи?");
+        if (getYesOrNoFromUser()) {
+            epicTaskToUpdate.setTitle(getTaskTitleFromUser());
+        }
+        System.out.println("Хотите изменить описание эпик задачи?");
+        if (getYesOrNoFromUser()) {
+            epicTaskToUpdate.setDescription(getTaskDescriptionFromUser());
+        }
+
+        epicTaskToUpdate.evaluateEpicTaskStatus();
+
+        TaskManager.updateEpicTask(epicTaskToUpdate);
     }
 
     public static void getAllTasks() {
@@ -173,7 +258,12 @@ public class ConsoleInterface {
 
     public static void getEpicIDSubTasks() {
         int id = ConsoleInterface.getIDFromUser();
-        HashMap<Integer, SubTask> subTasks = TaskManager.getAllSubTasks();
+        HashMap<Integer, SubTask> subTasks = TaskManager.getEpicIDSubTasks(id);
+
+        if (subTasks.isEmpty()) {
+            System.out.println("Cписок подзадач этого эпика пуст.");
+            return;
+        }
 
         System.out.println("Список всех подзадач эпика ID: " + TaskManager.getEpicTaskById(id).getId());
         for (SubTask subtask : subTasks.values()) {
@@ -188,19 +278,58 @@ public class ConsoleInterface {
     public static void getTaskById() {
         int id = ConsoleInterface.getIDFromUser();
         Task task = TaskManager.getTaskById(id);
+        if (task == null) {
+            System.out.println("Задачи с таким ID не существует.");
+            return;
+        }
         System.out.println(task);
     }
 
     public static void getSubTaskById() {
         int id = ConsoleInterface.getIDFromUser();
         SubTask subTask = TaskManager.getSubTaskById(id);
+        if (subTask == null) {
+            System.out.println("Подзадачи с таким ID не существует.");
+            return;
+        }
         System.out.println(subTask);
     }
 
     public static void getEpicTaskById() {
         int id = ConsoleInterface.getIDFromUser();
         EpicTask epicTask = TaskManager.getEpicTaskById(id);
+        if (epicTask == null) {
+            System.out.println("Эпик задачи с таким ID не существует.");
+            return;
+        }
         System.out.println(epicTask);
+    }
+
+    public static void deleteTaskById() {
+        int id = ConsoleInterface.getIDFromUser();
+        if (id < 0 || id > TaskManager.getAllTasks().size()) {
+            System.out.println("Задачи с таким ID не существует.");
+            return;
+        }
+        TaskManager.deleteTaskById(id);
+    }
+
+    public static void deleteSubTaskById() {
+        int id = ConsoleInterface.getIDFromUser();
+        if (id < 0 || id > TaskManager.getAllSubTasks().size()) {
+            System.out.println("Подзадачи с таким ID не существует.");
+            return;
+        }
+        TaskManager.deleteSubTaskById(id);
+    }
+
+    public static void deleteEpicTaskById() {
+        int id = ConsoleInterface.getIDFromUser();
+        if (id < 0 || id > TaskManager.getAllEpicTasks().size()) {
+            System.out.println("Эпик задачи с таким ID не существует.");
+            return;
+        }
+        TaskManager.deleteEpicTaskById(id);
     }
 
     public static void printGoodBye() {

@@ -1,7 +1,6 @@
 /**
  * В классе Main запустается бесконечный цикл консольного интерфейса,
  * в котором посредством выбора пользователем пунктов основного меню происходит основная работа программы.
- *
  */
 public class Main {
 
@@ -11,10 +10,10 @@ public class Main {
 
         ConsoleInterface.printHello();
 
-        while(true) {
+        while (true) {
             ConsoleInterface.printMenu();
             menuItem = ConsoleInterface.getMenuItem();
-            switch(menuItem) {
+            switch (menuItem) {
                 case 1:
                     ConsoleInterface.createTask();
                     break;
@@ -37,10 +36,13 @@ public class Main {
                     ConsoleInterface.getEpicIDSubTasks();
                     break;
                 case 8:
+                    ConsoleInterface.updateTask();
                     break;
                 case 9:
+                    ConsoleInterface.updateSubTask();
                     break;
                 case 10:
+                    ConsoleInterface.updateEpicTask();
                     break;
                 case 11:
                     ConsoleInterface.deleteAllTasks();
@@ -62,6 +64,15 @@ public class Main {
                     break;
                 case 17:
                     ConsoleInterface.getEpicTaskById();
+                    break;
+                case 18:
+                    ConsoleInterface.deleteTaskById();
+                    break;
+                case 19:
+                    ConsoleInterface.deleteSubTaskById();
+                    break;
+                case 20:
+                    ConsoleInterface.deleteEpicTaskById();
                     break;
                 case 0:
                     ConsoleInterface.printGoodBye();
