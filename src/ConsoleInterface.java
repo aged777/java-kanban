@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -23,15 +24,14 @@ public class ConsoleInterface {
         System.out.println("9 - Изменить (обновить) подзадачу");
         System.out.println("10 - Изменить (обновить) эпик задачу");
         System.out.println("11 - Удалить все задачи");
-        System.out.println("12 - Удалить все подзадачи");
+        System.out.println("12 - Удалить все подзадачи определённого эпика");
         System.out.println("13 - Удалить все эпик задачи");
-        System.out.println("14 - Удалить подзадачи определённого эпика");
-        System.out.println("15 - Получить задачу по ее ID");
-        System.out.println("16 - Получить подзадачу по ее ID");
-        System.out.println("17 - Получить эпик задачу по ее ID");
-        System.out.println("18 - Удалить задачу по ее ID");
-        System.out.println("19 - Удалить подзадачу по ее ID");
-        System.out.println("20 - Удалить эпик задачу по ее ID");
+        System.out.println("14 - Получить задачу по ее ID");
+        System.out.println("15 - Получить подзадачу по ее ID");
+        System.out.println("16 - Получить эпик задачу по ее ID");
+        System.out.println("17 - Удалить задачу по ее ID");
+        System.out.println("18 - Удалить подзадачу по ее ID");
+        System.out.println("19 - Удалить эпик задачу по ее ID");
         System.out.println("0 - Завершение работы.");
     }
 
@@ -86,72 +86,70 @@ public class ConsoleInterface {
         }
     }
 
-    public static void createTask() {
+    public static void createTask(TaskManager taskManager) {
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
-        Task task = new Task(title, description);
-        TaskManager.createTask(task);
+        Task task = new Task(title, description, taskManager.getId());
+        taskManager.createTask(task);
         System.out.println("Задача: " + title + ", с id "
                 + task.getId() + " успешно создана.");
     }
 
-    public static void createEpicTask() {
+    public static void createEpicTask(TaskManager taskManager) {
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
-        EpicTask task = new EpicTask(title, description);
-        TaskManager.createEpicTask(task);
+        EpicTask task = new EpicTask(title, description, taskManager.getId());
+        taskManager.createEpicTask(task);
         System.out.println("Эпик задача: " + title + ", с id "
                 + task.getId() + " успешно создана.");
     }
 
-    public static void createSubTask() {
+    public static void createSubTask(TaskManager taskManager) {
         System.out.println("Введите ID эпик задачи, для которой нужно создать подзадачу: ");
         int id = Integer.parseInt(scanner.nextLine());
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
-        SubTask task = new SubTask(TaskManager.getEpicTaskById(id), title, description);
-        TaskManager.createSubTask(task);
+        SubTask task = new SubTask(taskManager.getEpicTaskById(id), title, description, taskManager.getId());
+        taskManager.createSubTask(task);
         System.out.println("Подзадача: " + title + ", с индексом "
                 + task.getId() + " успешно создана.");
     }
 
-    public static void deleteAllTasks() {
+    public static void deleteAllTasks(TaskManager taskManager) {
         System.out.println("Вы действительно хотите удалить все задачи?");
         if (getYesOrNoFromUser()) {
-            TaskManager.deleteAllTasks();
+            taskManager.deleteAllTasks();
             System.out.println("Все задачи успешно удалены.");
         }
     }
 
-    public static void deleteAllSubTasks() {
+    public static void deleteAllSubTasksByEpicID(TaskManager taskManager) {
+        System.out.println("Введите ID эпик задачи, для которой нужно создать подзадачу: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        EpicTask epicTask = taskManager.getEpicTaskById(id);
+        if (epicTask == null) {
+            System.out.println("Задачи с таким ID не существует.");
+            return;
+        }
         System.out.println("Вы действительно хотите удалить все подзадачи?");
         if (getYesOrNoFromUser()) {
-            TaskManager.deleteAllSubTasks();
+            taskManager.deleteAllSubTasksByEpicID(id);
             System.out.println("Все подзадачи успешно удалены.");
         }
-
+        taskManager.deleteAllSubTasksByEpicID(id);
     }
 
-    public static void deleteAllEpicTasks() {
+    public static void deleteAllEpicTasks(TaskManager taskManager) {
         System.out.println("Вы действительно хотите удалить все эпик задачи?");
         if (getYesOrNoFromUser()) {
-            TaskManager.deleteAllEpicTasks();
+            taskManager.deleteAllEpicTasks();
             System.out.println("Все эпик задачи успешно удалены.");
         }
     }
 
-    public static void deleteAllEpicIdSubTasks() {
+    public static void updateTask(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        System.out.println("Вы действительно хотите удалить все эпик задачи?");
-        if (getYesOrNoFromUser()) {
-            TaskManager.deleteEpicIDSubTasks(id);
-            System.out.println("Все подзадачи эпика с ID: " + id + " успешно удалены.");
-        }
-    }
-
-    public static void updateTask() {
-        int id = ConsoleInterface.getIDFromUser();
-        Task taskToUpdate = TaskManager.getTaskById(id);
+        Task taskToUpdate = taskManager.getTaskById(id);
         if (taskToUpdate == null) {
             System.out.println("Задачи с таким ID не существует.");
             return;
@@ -168,12 +166,12 @@ public class ConsoleInterface {
         if (getYesOrNoFromUser()) {
             taskToUpdate.setStatus(getStatusFromUser());
         }
-        TaskManager.updateTask(taskToUpdate);
+        taskManager.updateTask(taskToUpdate);
     }
 
-    public static void updateSubTask() {
+    public static void updateSubTask(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        SubTask subTaskToUpdate = TaskManager.getSubTaskById(id);
+        SubTask subTaskToUpdate = taskManager.getSubTaskById(id);
         if (subTaskToUpdate == null) {
             System.out.println("Задачи с таким ID не существует.");
             return;
@@ -190,12 +188,12 @@ public class ConsoleInterface {
         if (getYesOrNoFromUser()) {
             subTaskToUpdate.setStatus(getStatusFromUser());
         }
-        TaskManager.updateSubTask(subTaskToUpdate);
+        taskManager.updateSubTask(subTaskToUpdate);
     }
 
-    public static void updateEpicTask() {
+    public static void updateEpicTask(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        EpicTask epicTaskToUpdate = TaskManager.getEpicTaskById(id);
+        EpicTask epicTaskToUpdate = taskManager.getEpicTaskById(id);
         if (epicTaskToUpdate == null) {
             System.out.println("Задачи с таким ID не существует.");
             return;
@@ -209,64 +207,62 @@ public class ConsoleInterface {
             epicTaskToUpdate.setDescription(getTaskDescriptionFromUser());
         }
 
-        epicTaskToUpdate.evaluateEpicTaskStatus();
-
-        TaskManager.updateEpicTask(epicTaskToUpdate);
+        taskManager.updateEpicTask(epicTaskToUpdate);
     }
 
-    public static void getAllTasks() {
-        HashMap<Integer, Task> tasks = TaskManager.getAllTasks();
+    public static void getAllTasks(TaskManager taskManager) {
+        ArrayList<Task> tasks = taskManager.getAllTasks();
         if (tasks.isEmpty()) {
             System.out.println("Cписок задач пуст.");
             return;
         }
         System.out.println("Список всех задач:");
-        for (Task task : tasks.values()) {
+        for (Task task : tasks) {
             System.out.println("Задача ID: " + task.getId() + ", статус: "
                     + task.getStatus() + ",  Заголовок: " + task.getTitle() +
                     "  Описание: " + task.getDescription());
         }
     }
 
-    public static void getAllSubTasks() {
-        HashMap<Integer, SubTask> tasks = TaskManager.getAllSubTasks();
+    public static void getAllSubTasks(TaskManager taskManager) {
+        ArrayList<SubTask> tasks = taskManager.getAllSubTasks();
         if (tasks.isEmpty()) {
             System.out.println("Cписок подзадач пуст.");
             return;
         }
         System.out.println("Список всех подзадач:");
-        for (Task task : tasks.values()) {
+        for (Task task : tasks) {
             System.out.println("Подзадача ID: " + task.getId() + ", статус: "
                     + task.getStatus() + ",  Заголовок: " + task.getTitle() +
                     "  Описание: " + task.getDescription());
         }
     }
 
-    public static void getAllEpicTasks() {
-        HashMap<Integer, EpicTask> tasks = TaskManager.getAllEpicTasks();
+    public static void getAllEpicTasks(TaskManager taskManager) {
+        ArrayList<EpicTask> tasks = taskManager.getAllEpicTasks();
         if (tasks.isEmpty()) {
             System.out.println("Cписок эпикзадач пуст.");
             return;
         }
         System.out.println("Список всех эпикзадач:");
-        for (Task task : tasks.values()) {
+        for (Task task : tasks) {
             System.out.println("Эпик задача ID: " + task.getId() + ", статус: "
                     + task.getStatus() + ",  Заголовок: " + task.getTitle() +
                     "  Описание: " + task.getDescription());
         }
     }
 
-    public static void getEpicIDSubTasks() {
+    public static void getEpicIDSubTasks(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        HashMap<Integer, SubTask> subTasks = TaskManager.getEpicIDSubTasks(id);
+        ArrayList<SubTask> subTasks = taskManager.getEpicIDSubTasks(id);
 
         if (subTasks.isEmpty()) {
             System.out.println("Cписок подзадач этого эпика пуст.");
             return;
         }
 
-        System.out.println("Список всех подзадач эпика ID: " + TaskManager.getEpicTaskById(id).getId());
-        for (SubTask subtask : subTasks.values()) {
+        System.out.println("Список всех подзадач эпика ID: " + taskManager.getEpicTaskById(id).getId());
+        for (SubTask subtask : subTasks) {
             if (subtask.getEpicTaskID() == id) {
                 System.out.println("Подзадача ID: " + subtask.getId() + ", статус: "
                         + subtask.getStatus() + ",  Заголовок: " + subtask.getTitle()
@@ -275,9 +271,9 @@ public class ConsoleInterface {
         }
     }
 
-    public static void getTaskById() {
+    public static void getTaskById(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        Task task = TaskManager.getTaskById(id);
+        Task task = taskManager.getTaskById(id);
         if (task == null) {
             System.out.println("Задачи с таким ID не существует.");
             return;
@@ -285,9 +281,9 @@ public class ConsoleInterface {
         System.out.println(task);
     }
 
-    public static void getSubTaskById() {
+    public static void getSubTaskById(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        SubTask subTask = TaskManager.getSubTaskById(id);
+        SubTask subTask = taskManager.getSubTaskById(id);
         if (subTask == null) {
             System.out.println("Подзадачи с таким ID не существует.");
             return;
@@ -295,9 +291,9 @@ public class ConsoleInterface {
         System.out.println(subTask);
     }
 
-    public static void getEpicTaskById() {
+    public static void getEpicTaskById(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        EpicTask epicTask = TaskManager.getEpicTaskById(id);
+        EpicTask epicTask = taskManager.getEpicTaskById(id);
         if (epicTask == null) {
             System.out.println("Эпик задачи с таким ID не существует.");
             return;
@@ -305,31 +301,31 @@ public class ConsoleInterface {
         System.out.println(epicTask);
     }
 
-    public static void deleteTaskById() {
+    public static void deleteTaskById(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        if (TaskManager.getTaskById(id) == null) {
+        if (taskManager.getTaskById(id) == null) {
             System.out.println("Задачи с таким ID не существует.");
             return;
         }
-        TaskManager.deleteTaskById(id);
+        taskManager.deleteTaskById(id);
     }
 
-    public static void deleteSubTaskById() {
+    public static void deleteSubTaskById(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        if (TaskManager.getSubTaskById(id) == null) {
+        if (taskManager.getSubTaskById(id) == null) {
             System.out.println("Подзадачи с таким ID не существует.");
             return;
         }
-        TaskManager.deleteSubTaskById(id);
+        taskManager.deleteSubTaskById(id);
     }
 
-    public static void deleteEpicTaskById() {
+    public static void deleteEpicTaskById(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
-        if (TaskManager.getEpicTaskById(id) == null) {
+        if (taskManager.getEpicTaskById(id) == null) {
             System.out.println("Эпик задачи с таким ID не существует.");
             return;
         }
-        TaskManager.deleteEpicTaskById(id);
+        taskManager.deleteEpicTaskById(id);
     }
 
     public static void printGoodBye() {

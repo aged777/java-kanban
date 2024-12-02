@@ -1,15 +1,14 @@
 public class SubTask extends Task {
     private int epicTaskID;
 
-    public SubTask(EpicTask epicTask, String title, String description) {
-        super(title, description);
+    public SubTask(EpicTask epicTask, String title, String description, int id) {
+        super(title, description, id);
         this.epicTaskID = epicTask.getId();
     }
 
     public int getEpicTaskID() {
         return epicTaskID;
     }
-
 
     @Override
     public String toString() {
@@ -18,9 +17,6 @@ public class SubTask extends Task {
                 ", статус: " + super.getStatus() +
                 ",  Заголовок: " + super.getTitle() +
                 ", Описание: " + super.getDescription() +
-                ", является частью эпик задачи с ID: " +
-                TaskManager.getEpicTaskById(epicTaskID).getId() +
-                ", " + TaskManager.getEpicTaskById(epicTaskID).getDescription() +
-                ", статус эпика: " + TaskManager.getEpicTaskById(epicTaskID).getStatus() + '\'';
+                ", является частью эпик задачи с ID: " + epicTaskID + '\'';
     }
 }

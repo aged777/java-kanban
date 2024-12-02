@@ -5,8 +5,8 @@
 public class Main {
 
     public static void main(String[] args) {
-
         int menuItem;
+        TaskManager taskManager = new TaskManager();
 
         ConsoleInterface.printHello();
 
@@ -15,64 +15,61 @@ public class Main {
             menuItem = ConsoleInterface.getMenuItem();
             switch (menuItem) {
                 case 1:
-                    ConsoleInterface.createTask();
+                    ConsoleInterface.createTask(taskManager);
                     break;
                 case 2:
-                    ConsoleInterface.createEpicTask();
+                    ConsoleInterface.createEpicTask(taskManager);
                     break;
                 case 3:
-                    ConsoleInterface.createSubTask();
+                    ConsoleInterface.createSubTask(taskManager);
                     break;
                 case 4:
-                    ConsoleInterface.getAllTasks();
+                    ConsoleInterface.getAllTasks(taskManager);
                     break;
                 case 5:
-                    ConsoleInterface.getAllSubTasks();
+                    ConsoleInterface.deleteAllSubTasksByEpicID(taskManager);
                     break;
                 case 6:
-                    ConsoleInterface.getAllEpicTasks();
+                    ConsoleInterface.getAllEpicTasks(taskManager);
                     break;
                 case 7:
-                    ConsoleInterface.getEpicIDSubTasks();
+                    ConsoleInterface.getEpicIDSubTasks(taskManager);
                     break;
                 case 8:
-                    ConsoleInterface.updateTask();
+                    ConsoleInterface.updateTask(taskManager);
                     break;
                 case 9:
-                    ConsoleInterface.updateSubTask();
+                    ConsoleInterface.updateSubTask(taskManager);
                     break;
                 case 10:
-                    ConsoleInterface.updateEpicTask();
+                    ConsoleInterface.updateEpicTask(taskManager);
                     break;
                 case 11:
-                    ConsoleInterface.deleteAllTasks();
+                    ConsoleInterface.deleteAllTasks(taskManager);
                     break;
                 case 12:
-                    ConsoleInterface.deleteAllSubTasks();
+                    ConsoleInterface.deleteAllSubTasksByEpicID(taskManager);
                     break;
                 case 13:
-                    ConsoleInterface.deleteAllEpicTasks();
+                    ConsoleInterface.deleteAllEpicTasks(taskManager);
                     break;
                 case 14:
-                    ConsoleInterface.deleteAllEpicIdSubTasks();
+                    ConsoleInterface.getTaskById(taskManager);
                     break;
                 case 15:
-                    ConsoleInterface.getTaskById();
+                    ConsoleInterface.getSubTaskById(taskManager);
                     break;
                 case 16:
-                    ConsoleInterface.getSubTaskById();
+                    ConsoleInterface.getEpicTaskById(taskManager);
                     break;
                 case 17:
-                    ConsoleInterface.getEpicTaskById();
+                    ConsoleInterface.deleteTaskById(taskManager);
                     break;
                 case 18:
-                    ConsoleInterface.deleteTaskById();
+                    ConsoleInterface.deleteSubTaskById(taskManager);
                     break;
                 case 19:
-                    ConsoleInterface.deleteSubTaskById();
-                    break;
-                case 20:
-                    ConsoleInterface.deleteEpicTaskById();
+                    ConsoleInterface.deleteEpicTaskById(taskManager);
                     break;
                 case 0:
                     ConsoleInterface.printGoodBye();
