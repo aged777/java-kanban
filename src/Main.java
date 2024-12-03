@@ -1,54 +1,78 @@
-import java.util.Scanner;
-
+/**
+ * В классе Main запустается бесконечный цикл консольного интерфейса,
+ * в котором посредством выбора пользователем пунктов основного меню происходит основная работа программы.
+ */
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
-        ConsoleInterface consoleInterface = new ConsoleInterface();
         int menuItem;
+        TaskManager taskManager = new TaskManager();
 
-        consoleInterface.printHello();
+        ConsoleInterface.printHello();
 
-        while(true) {
-            consoleInterface.printMenu();
-            menuItem = consoleInterface.getMenuNumber();
-            switch(menuItem) {
+        while (true) {
+            ConsoleInterface.printMenu();
+            menuItem = ConsoleInterface.getMenuItem();
+            switch (menuItem) {
                 case 1:
-                    consoleInterface.createTask(taskManager);
+                    ConsoleInterface.createTask(taskManager);
                     break;
                 case 2:
-                    consoleInterface.createEpicTask(taskManager);
+                    ConsoleInterface.createEpicTask(taskManager);
                     break;
                 case 3:
-                    consoleInterface.createSubTask(taskManager);
+                    ConsoleInterface.createSubTask(taskManager);
                     break;
                 case 4:
-                    consoleInterface.getAllTasks(taskManager);
+                    ConsoleInterface.getAllTasks(taskManager);
                     break;
                 case 5:
-                    consoleInterface.getAllSubTasks(taskManager);
+                    ConsoleInterface.deleteAllSubTasksByEpicID(taskManager);
                     break;
                 case 6:
-                    consoleInterface.getAllEpicTasks(taskManager);
+                    ConsoleInterface.getAllEpicTasks(taskManager);
                     break;
                 case 7:
+                    ConsoleInterface.getEpicIDSubTasks(taskManager);
                     break;
                 case 8:
+                    ConsoleInterface.updateTask(taskManager);
                     break;
                 case 9:
+                    ConsoleInterface.updateSubTask(taskManager);
                     break;
                 case 10:
+                    ConsoleInterface.updateEpicTask(taskManager);
                     break;
                 case 11:
+                    ConsoleInterface.deleteAllTasks(taskManager);
                     break;
                 case 12:
+                    ConsoleInterface.deleteAllSubTasksByEpicID(taskManager);
                     break;
                 case 13:
+                    ConsoleInterface.deleteAllEpicTasks(taskManager);
                     break;
                 case 14:
+                    ConsoleInterface.getTaskById(taskManager);
+                    break;
+                case 15:
+                    ConsoleInterface.getSubTaskById(taskManager);
+                    break;
+                case 16:
+                    ConsoleInterface.getEpicTaskById(taskManager);
+                    break;
+                case 17:
+                    ConsoleInterface.deleteTaskById(taskManager);
+                    break;
+                case 18:
+                    ConsoleInterface.deleteSubTaskById(taskManager);
+                    break;
+                case 19:
+                    ConsoleInterface.deleteEpicTaskById(taskManager);
                     break;
                 case 0:
-                    consoleInterface.printGoodBye();
+                    ConsoleInterface.printGoodBye();
                     return;
             }
         }

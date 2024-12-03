@@ -1,15 +1,14 @@
 import java.util.Objects;
 
 public class Task {
+
     private final int id;
     private String title;
     private String description;
-
     private Status status;
 
-    public Task(String title, String description) {
-        TaskManager.increaseId();
-        this.id = TaskManager.getId();
+    public Task(String title, String description, int id) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
@@ -58,10 +57,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Задача " +
+                "ID: " + id +
+                ", статус: " + status +
+                ",  Заголовок: " + title +
+                ", Описание: " + description + '\'';
     }
 }

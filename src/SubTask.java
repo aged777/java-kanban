@@ -1,22 +1,22 @@
-import java.util.Objects;
-
 public class SubTask extends Task {
     private int epicTaskID;
-    public SubTask(EpicTask epicTask, String title, String description) {
-        super(title, description);
+
+    public SubTask(EpicTask epicTask, String title, String description, int id) {
+        super(title, description, id);
         this.epicTaskID = epicTask.getId();
-        epicTask.addSubTask(this);
     }
 
     public int getEpicTaskID() {
         return epicTaskID;
     }
 
-
     @Override
     public String toString() {
-        return "SubTask{" +
-                "epicTask=" + epicTaskID +
-                '}' + super.toString();
+        return "Подзадача: " +
+                "ID: " + super.getId() +
+                ", статус: " + super.getStatus() +
+                ",  Заголовок: " + super.getTitle() +
+                ", Описание: " + super.getDescription() +
+                ", является частью эпик задачи с ID: " + epicTaskID + '\'';
     }
 }
