@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Класс создан для хранения, изменения, получения объектов всех видов задач.
@@ -15,6 +16,7 @@ public class TaskManager {
     public int getId() {
         return id;
     }
+
 
     // Методы для Task
     public ArrayList<Task> getAllTasks() {
@@ -49,9 +51,11 @@ public class TaskManager {
 
     public void deleteAllSubTasksByEpicID(int id) {
         EpicTask epicTask = getEpicTaskById(id);
-        for (int subTaskID : epicTask.getSubTasksID()) {
-            subTasks.remove(subTaskID);
+        ArrayList<Integer> subTasksID = epicTask.getSubTasksID();
+        for (Integer integer : subTasksID) {
+            subTasks.remove(integer);
         }
+        subTasksID.clear();
         evaluateEpicTaskStatus(epicTask);
     }
 
@@ -71,7 +75,9 @@ public class TaskManager {
     public void createSubTask(SubTask task) {
         subTasks.put(task.getId(), task);
         generateID();
-        evaluateEpicTaskStatus(getEpicTaskById(task.getEpicTaskID()));
+        EpicTask epicTask = getEpicTaskById(task.getEpicTaskID());
+        epicTask.addSubtaskID(task.getId());
+        evaluateEpicTaskStatus(epicTask);
     }
 
     public void updateSubTask(SubTask task) {
@@ -92,9 +98,17 @@ public class TaskManager {
     }
 
     public void deleteAllEpicTasks() {
+        ArrayList<EpicTask> epicTasksCopy = getAllEpicTasks();
+        for (EpicTask epicTask : epicTasksCopy) {
+            for (int id : epicTask.getSubTasksID()) {
+                subTasks.remove(id);
+            }
+        }
+
         epicTasks.clear();
         // Этот метод должен не только удалять все эпики, но и обновлять их статус
         // вопрос - не понимаю, зачем обновлять статус эпиков, если мы их удаляем?
+        // возможно имелось ввиду проверка статусов подзадач
     }
 
     public EpicTask getEpicTaskById(int id) {
@@ -121,16 +135,21 @@ public class TaskManager {
 
     private void evaluateEpicTaskStatus(EpicTask epicTask) {
         int[] util = new int[2];
-        for (Integer subTaskID : epicTask.getSubTasksID()) {
+        ArrayList<Integer> subTasksID = epicTask.getSubTasksID();
+        if (subTasksID == null) {
+            epicTask.setStatus(Status.NEW);
+            return;
+        }
+        for (Integer subTaskID : subTasksID) {
             if (this.getSubTaskById(subTaskID).getStatus().equals(Status.NEW)) {
                 util[0]++;
             } else if (this.getSubTaskById(subTaskID).getStatus().equals(Status.DONE)) {
                 util[1]++;
             }
         }
-        if (util[0] == epicTask.getSubTasksID().size()) {
+        if (util[0] == subTasksID.size()) {
             epicTask.setStatus(Status.NEW);
-        } else if (util[1] == epicTask.getSubTasksID().size()) {
+        } else if (util[1] == subTasksID.size()) {
             epicTask.setStatus(Status.DONE);
         } else {
             epicTask.setStatus(Status.IN_PROGRESS);
@@ -184,6 +203,5 @@ public class TaskManager {
         createSubTask(subTask11);
         SubTask subTask12 = new SubTask(epicTask3, "подзадача5эпик3", "описаниеподзадача5эпик3", getId());
         createSubTask(subTask12);
-
     }
 }

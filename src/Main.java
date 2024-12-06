@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         int menuItem;
         TaskManager taskManager = new TaskManager();
+        taskManager.testingMethod();
 
         ConsoleInterface.printHello();
 
@@ -27,7 +28,7 @@ public class Main {
                     ConsoleInterface.getAllTasks(taskManager);
                     break;
                 case 5:
-                    ConsoleInterface.deleteAllSubTasksByEpicID(taskManager);
+                    ConsoleInterface.getAllSubTasks(taskManager);
                     break;
                 case 6:
                     ConsoleInterface.getAllEpicTasks(taskManager);

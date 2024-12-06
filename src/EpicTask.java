@@ -6,6 +6,11 @@ public class EpicTask extends Task {
 
     public EpicTask(String title, String description, int id) {
         super(title, description, id);
+        super.setStatus(Status.NEW);
+    }
+
+    public void addSubtaskID(int id) {
+        subTasksID.add(id);
     }
 
     public ArrayList<Integer> getSubTasksID() {

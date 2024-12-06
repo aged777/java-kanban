@@ -124,7 +124,7 @@ public class ConsoleInterface {
     }
 
     public static void deleteAllSubTasksByEpicID(TaskManager taskManager) {
-        System.out.println("Введите ID эпик задачи, для которой нужно создать подзадачу: ");
+        System.out.println("Введите ID эпик задачи, для которой нужно удалить все подзадачи: ");
         int id = Integer.parseInt(scanner.nextLine());
         EpicTask epicTask = taskManager.getEpicTaskById(id);
         if (epicTask == null) {
@@ -136,7 +136,6 @@ public class ConsoleInterface {
             taskManager.deleteAllSubTasksByEpicID(id);
             System.out.println("Все подзадачи успешно удалены.");
         }
-        taskManager.deleteAllSubTasksByEpicID(id);
     }
 
     public static void deleteAllEpicTasks(TaskManager taskManager) {
@@ -254,10 +253,15 @@ public class ConsoleInterface {
 
     public static void getEpicIDSubTasks(TaskManager taskManager) {
         int id = ConsoleInterface.getIDFromUser();
+        EpicTask epicTask = taskManager.getEpicTaskById(id);
+        if (epicTask == null) {
+            System.out.println("Эпик задачи с ID: " + id + " не существует.");
+            return;
+        }
         ArrayList<SubTask> subTasks = taskManager.getEpicIDSubTasks(id);
 
         if (subTasks.isEmpty()) {
-            System.out.println("Cписок подзадач этого эпика пуст.");
+            System.out.println("Cписок подзадач этого эпика пуст");
             return;
         }
 
