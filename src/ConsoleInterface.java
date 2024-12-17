@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -89,7 +88,7 @@ public class ConsoleInterface {
     public static void createTask(TaskManager taskManager) {
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
-        Task task = new Task(title, description, taskManager.getId());
+        Task task = new Task(title, description);
         taskManager.createTask(task);
         System.out.println("Задача: " + title + ", с id "
                 + task.getId() + " успешно создана.");
@@ -98,7 +97,7 @@ public class ConsoleInterface {
     public static void createEpicTask(TaskManager taskManager) {
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
-        EpicTask task = new EpicTask(title, description, taskManager.getId());
+        EpicTask task = new EpicTask(title, description);
         taskManager.createEpicTask(task);
         System.out.println("Эпик задача: " + title + ", с id "
                 + task.getId() + " успешно создана.");
@@ -109,7 +108,7 @@ public class ConsoleInterface {
         int id = Integer.parseInt(scanner.nextLine());
         String title = getTaskTitleFromUser();
         String description = getTaskDescriptionFromUser();
-        SubTask task = new SubTask(taskManager.getEpicTaskById(id), title, description, taskManager.getId());
+        SubTask task = new SubTask(taskManager.getEpicTaskById(id), title, description);
         taskManager.createSubTask(task);
         System.out.println("Подзадача: " + title + ", с индексом "
                 + task.getId() + " успешно создана.");

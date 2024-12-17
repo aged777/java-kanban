@@ -2,13 +2,12 @@ import java.util.Objects;
 
 public class Task {
 
-    private final int id;
+    private int id;
     private String title;
     private String description;
     private Status status;
 
-    public Task(String title, String description, int id) {
-        this.id = id;
+    public Task(String title, String description) {
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
@@ -16,6 +15,10 @@ public class Task {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Status getStatus() {

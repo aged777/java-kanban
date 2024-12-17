@@ -4,8 +4,8 @@ public class EpicTask extends Task {
 
     private ArrayList<Integer> subTasksID = new ArrayList<>();
 
-    public EpicTask(String title, String description, int id) {
-        super(title, description, id);
+    public EpicTask(String title, String description) {
+        super(title, description);
         super.setStatus(Status.NEW);
     }
 
